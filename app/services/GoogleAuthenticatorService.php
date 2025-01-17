@@ -2,6 +2,9 @@
 
 namespace app\services;
 
+use app\Enums\ErrorCode\ErrorCode;
+use app\exception\BaseException;
+use app\model\User2FAModel;
 use OTPHP\TOTP;
 
 /**
@@ -15,15 +18,25 @@ class GoogleAuthenticatorService extends BaseService
      * @param string $issuer
      * @return array
      */
-    public function generateSecretAndQRCode(string $username, string $issuer): array
+    public function generateSecretAndQRCode(int $username, string $issuer = 'Metaprise'): array
     {
         $totp = TOTP::create();
         $totp->setLabel($username);
         $totp->setIssuer($issuer);
 
+        $secret = $totp->getSecret();
+        $qrCodeUrl = $totp->getProvisioningUri();
+
+        User2FAModel::create([
+            'user_id' => $username,
+            'secret' => $secret
+        ]);
+
+        $crypt_service = new CryptService();
+
         return [
-            'secret' => $totp->getSecret(),
-            'qrCodeUrl' => $totp->getProvisioningUri(),
+            'secret' => $secret,
+            'image' => $crypt_service->qrcode($qrCodeUrl)
         ];
     }
 
@@ -33,10 +46,20 @@ class GoogleAuthenticatorService extends BaseService
      * @param string $code
      * @return bool
      */
-    public function verifyCode(string $secret, string $code): bool
+    public function verifyCode(int $user_id, string $code): bool
     {
+        $secret = User2FAModel::where('user_id', $user_id)->where('status', 'unverified')->value('secret');
+        if (empty($secret)) {
+            throw New BaseException(ErrorCode::VERIFY_2FA_ERROR);
+        }
+
         $totp = TOTP::create($secret);
-        return $totp->verify($code);
+        $result = $totp->verify($code);
+        if ($result === false) {
+            throw New BaseException(ErrorCode::VERIFY_2FA_ERROR);
+        }
+
+        return true;
     }
 
 }

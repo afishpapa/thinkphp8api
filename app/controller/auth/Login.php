@@ -4,8 +4,10 @@ declare (strict_types=1);
 namespace app\controller\auth;
 
 use app\BaseController;
+use app\Enums\ErrorCode\ErrorCode;
 use app\services\auth\UserService;
 use app\validate\auth\LoginValidate;
+use BaseException;
 use think\App;
 use think\exception\ValidateException;
 use think\Request;
@@ -26,6 +28,7 @@ class Login extends BaseController
     public function login(): Response
     {
         $p = input();
+
         try {
             $this->validate($p, LoginValidate::class);
 
@@ -33,9 +36,11 @@ class Login extends BaseController
 
             return $this->Success($data);
         } catch (ValidateException $e) {
-            return $this->Error($e->getError());
+            return $this->Error(ErrorCode::VALIDATION_ERROR, $e->getError());
+        } catch (BaseException $e) {
+            return $this->Error($e->getCode());
         } catch (\Exception $e) {
-            return $this->Error($e->getMessage());
+            return $this->Error($e->getCode());
         }
     }
 

@@ -2,6 +2,15 @@
 
 namespace app\services;
 
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\BinaryWriter;
+use Endroid\QrCode\Writer\PngWriter;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use think\App;
@@ -108,6 +117,41 @@ class CryptService extends BaseService
         return openssl_decrypt($encryptedData, $algo, $key, OPENSSL_RAW_DATA, $iv);
     }
 
+    function qrcode($content)
+    {
+        $writer = new PngWriter();
+
+        // Create QR code
+        $qrCode = new QrCode(
+            data: $content,
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::Low,
+            size: 300,
+            margin: 10,
+            roundBlockSizeMode: RoundBlockSizeMode::Margin,
+            foregroundColor: new Color(0, 0, 0),
+            backgroundColor: new Color(255, 255, 255)
+        );
+
+
+        // Create generic logo
+//        $logo = new Logo(
+//            path: __DIR__ . '/assets/symfony.png',
+//            resizeToWidth: 50,
+//            punchoutBackground: true
+//        );
+
+        // Create generic label
+        $label = new Label(
+            text: 'Label',
+            textColor: new Color(255, 0, 0)
+        );
+
+//        $result = $writer->write($qrCode, $logo, $label);
+        $result = $writer->write($qrCode, null, $label);
+
+        return $result->getDataUri();
+    }
 
 
 }

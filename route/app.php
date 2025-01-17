@@ -8,6 +8,8 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+use app\middleware\Check2FA;
+use app\middleware\CheckJwt;
 use think\facade\Route;
 
 Route::get('think', function () {
@@ -20,7 +22,7 @@ Route::get('hello/:name', 'index/hello');
 // 登录管理
 Route::group('/login', function () {
     // 后台登录
-    Route::post('/login', '/auth.Login/login');
+    Route::post('/login', '/auth.Login/login')->middleware(Check2FA::class);
     // 获取验证码
     Route::get('/captcha', '/admin/auth.Login/captcha');
 });
@@ -38,3 +40,11 @@ Route::group('/register', function () {
     // 查询邮箱验证状态
     Route::get('/check', '/auth.Register/check');
 });
+
+
+Route::group('/', function () {
+    // 后台登录
+    Route::get('/googleAuthenticator/generateSecretAndQRCode', '/auth.googleAuthenticator/generateSecretAndQRCode');
+    // 验证 2FA code
+    Route::post('/googleAuthenticator/verify', '/auth.googleAuthenticator/verify');
+})->middleware(CheckJwt::class);

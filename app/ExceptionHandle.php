@@ -58,9 +58,9 @@ class ExceptionHandle extends Handle
         }
 
         // 请求异常
-        if ($e instanceof HttpException && $request->isAjax()) {
-            return response($e->getMessage(), $e->getStatusCode());
-        }
+//        if ($e instanceof HttpException && $request->isAjax()) {
+//            return response($e->getMessage(), $e->getStatusCode());
+//        }
         // 其他错误交给系统处理
         return parent::render($request, $e);
     }

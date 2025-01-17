@@ -33,7 +33,8 @@
         "ext-openssl": "*",
         "ramsey/uuid": "^4.7",
         "phpmailer/phpmailer": "^6.9",
-        "spomky-labs/otphp": "^11.3"
+        "spomky-labs/otphp": "^11.3",
+        "endroid/qr-code": "^6.0"
     },
     "require-dev": {
         "symfony/var-dumper": ">=4.2",

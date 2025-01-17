@@ -3,38 +3,36 @@
 
 namespace app\trait;
 
-use think\facade\Log;
+use app\Enums\ErrorCode\ErrorCode;
 use think\Response;
+use think\response\Json;
 
 trait Output
 {
-
-    public function Success($data = [], string $message = 'success', int $code = 200, string $type = 'json', array $header = []): Response
+    public function Success($data = [], ErrorCode $errorCode = ErrorCode::SUCCESS): Json
     {
-        $result = [
-            'code' => $code,
-            'message' => $message,
-            'time' => time(),
-            'data' => $data
-        ];
-        return Response::create($result, $type)->header($header)->code(200);
+        return json([
+            'code'    => $errorCode->value, // 错误码值
+            'message' => $errorCode->message(), // 错误码对应的描述信息
+            'data'    => $data, // 可选的返回数据
+            'time'    => time()
+        ]);
     }
 
-    /**
-     * 返回封装后的API数据到客户端
-     * @param mixed $data 要返回的数据
-     * @param integer $code 返回的code
-     * @param mixed $message 提示信息
-     * @param string $type 返回数据格式
-     * @param array $header 发送的Header信息
-     * @return Response
-     */
-    public function Error(string $message = 'fail', int $code = 400, string $type = 'json', array $header = []): Response
+    public function Error(string|ErrorCode $errorCode = ErrorCode::UNKNOWN_ERROR, string $message = ''): Json
     {
-        $result = [
-            'code' => $code,
-            'message' => $message,
-        ];
-        return Response::create($result, $type)->header($header)->code($code);
+        if ($errorCode instanceof ErrorCode) {
+            return json([
+                'code'    => $errorCode->value, // 错误码值
+                'message' => $message ?: $errorCode->message(), // 错误码对应的描述信息
+                'time'    => time()
+            ]);
+        }
+
+        return json([
+            'code'    => ErrorCode::UNKNOWN_ERROR, // 错误码值
+            'message' => $errorCode, // 错误码对应的描述信息
+            'time'    => time()
+        ]);
     }
 }

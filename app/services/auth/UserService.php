@@ -65,10 +65,6 @@ class UserService extends BaseService
             throw new Exception('This account has been disabled');
         }
 
-        // 验证2FA
-//        $google_auth = new GoogleAuthenticatorService();
-//        $google_auth->verifyCode();
-
         // 获取权限菜单
         $rule = new RuleModel();
         $menu_list = $rule->tree();

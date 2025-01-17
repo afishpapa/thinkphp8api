@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\BaseController;
+use app\Enums\ErrorCode\ErrorCode;
 use app\model\UserLoginModel;
 use app\services\CryptService;
 use DateTime;
@@ -13,8 +14,11 @@ class Index extends BaseController
 {
     public function index()
     {
-        halt((new DateTime())->modify('+7 days')->format('Y-m-d H:i:s'));
 
+        return $this->Error(ErrorCode::USER_NOT_FOUND);
+        die;
+        halt((new DateTime())->modify('+7 days')->format('Y-m-d H:i:s'));
+        json_validate();
 //        $data = Db::table('user_login')->find(1);
         $data = UserLoginModel::find(1)->user->toArray();
         halt($data);
