@@ -3,7 +3,7 @@ declare (strict_types=1);
 
 namespace app\exception;
 
-use app\Enums\ErrorCode\ErrorCode;
+use app\enums\ErrorCode\ErrorCode;
 use think\Exception;
 
 class BaseException extends Exception

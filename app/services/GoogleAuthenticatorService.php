@@ -2,7 +2,7 @@
 
 namespace app\services;
 
-use app\Enums\ErrorCode\ErrorCode;
+use app\enums\ErrorCode\ErrorCode;
 use app\exception\BaseException;
 use app\model\User2FAModel;
 use OTPHP\TOTP;

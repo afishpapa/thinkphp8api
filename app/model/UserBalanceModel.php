@@ -4,7 +4,7 @@ declare (strict_types=1);
 namespace app\model;
 
 use app\BaseModel;
-use app\Enums\ErrorCode\ErrorCode;
+use app\enums\ErrorCode\ErrorCode;
 use app\exception\BaseException;
 
 /**

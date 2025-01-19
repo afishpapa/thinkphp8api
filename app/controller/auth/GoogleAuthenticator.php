@@ -4,7 +4,7 @@ declare (strict_types=1);
 namespace app\controller\auth;
 
 use app\BaseController;
-use app\Enums\ErrorCode\ErrorCode;
+use app\enums\ErrorCode\ErrorCode;
 use app\exception\BaseException;
 use app\services\GoogleAuthenticatorService;
 use think\App;
