@@ -18,7 +18,7 @@ class GoogleAuthenticatorService extends BaseService
      * @param string $issuer
      * @return array
      */
-    public function generateSecretAndQRCode(int $username, string $issuer = 'Metaprise'): array
+    public function generateSecretAndQRCode(int $username, string $issuer = 'issuer'): array
     {
         $totp = TOTP::create();
         $totp->setLabel($username);
