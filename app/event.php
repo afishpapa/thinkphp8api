@@ -12,7 +12,8 @@ return [
         'LogWrite' => [],
 
         'UserRegister' => [
-            'app\listener\UserRegister'
+            'app\listener\UserRegisterSendEmail',
+            'app\listener\GenerateAccounts'
         ]
     ],
 
