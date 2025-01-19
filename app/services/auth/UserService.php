@@ -73,8 +73,7 @@ class UserService extends BaseService
         $user_login->login_time = nowDate();
         $user_login->save();
 
-        // 事件记录操作日志
-//        event('AdminLog', ['admin_id' => $user['id'], 'username' => $user['username']]);
+        event('UserLogin', $user_login);
 
         return $this->success([
             'token'     => $crypt_service->makeJWT([
