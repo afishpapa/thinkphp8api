@@ -50,21 +50,18 @@ class EmailService extends BaseService
      * @return string
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function verifyEmail(int $uid, string $email)
+    public function verifyEmail(int $uid, string $email, string $token)
     {
         $domain = $this->app->request->domain();
-        $token = randomByte(16);
 
         EmailVerificationsModel::create([
-            'user_id' => $uid,
-            'email'   => $email,
-            'token'   => $token,
+            'user_id'     => $uid,
+            'email'       => $email,
+            'token'       => $token,
             'expire_time' => (new DateTime())->modify('+7 days')->format('Y-m-d H:i:s')
         ]);
 
         $this->send($email, 'verify email', $domain . '/register/verify/token/' . $token);
-
-        return $token;
     }
 
 }

@@ -121,9 +121,8 @@ class UserService extends BaseService
             throw $e;
         }
 
-        // 发送验证邮件
-        $email_service = new EmailService();
-        $token = $email_service->verifyEmail($user_login['user_id'], $user_login->identifier);
+        $token = randomByte(16);
+        event('UserRegister', compact('user', 'user_login', 'token'));
 
         return $this->success([
             'token' => $token
