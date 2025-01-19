@@ -3,7 +3,7 @@ declare (strict_types=1);
 
 namespace app\middleware;
 
-use app\enums\ErrorCode\ErrorCode;
+use app\enums\errorCode\ErrorCode;
 use app\model\UserLoginModel;
 use app\services\GoogleAuthenticatorService;
 use app\trait\Output;

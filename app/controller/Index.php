@@ -3,7 +3,7 @@
 namespace app\controller;
 
 use app\BaseController;
-use app\enums\ErrorCode\ErrorCode;
+use app\enums\errorCode\ErrorCode;
 use app\model\UserBalanceModel;
 use app\model\UserLoginModel;
 use app\services\CryptService;

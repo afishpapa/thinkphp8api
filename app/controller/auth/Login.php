@@ -33,8 +33,8 @@ class Login extends BaseController
 
     public function captcha(): Json
     {
-        $captcha = new Captcha();
-        $captcha = $captcha->create();
-        return $this->Success($captcha);
+//        $captcha = new Captcha();
+//        $captcha = $captcha->create();
+//        return $this->Success($captcha);
     }
 }

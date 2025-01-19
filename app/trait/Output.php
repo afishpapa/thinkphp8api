@@ -3,7 +3,7 @@
 
 namespace app\trait;
 
-use app\enums\ErrorCode\ErrorCode;
+use app\enums\errorCode\ErrorCode;
 use think\Response;
 use think\response\Json;
 

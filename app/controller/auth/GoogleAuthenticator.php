@@ -4,8 +4,6 @@ declare (strict_types=1);
 namespace app\controller\auth;
 
 use app\BaseController;
-use app\enums\ErrorCode\ErrorCode;
-use app\exception\BaseException;
 use app\services\GoogleAuthenticatorService;
 use think\App;
 use think\response\Json;
@@ -30,11 +28,11 @@ class GoogleAuthenticator extends BaseController
 
     public function verify(): Json
     {
-            $p = input();
-            //validate  @todo
-            $user = $this->request->user;
-            $data = $this->service->verify($user['id'], $p['code']);
+        $p = input();
+        //validate  @todo
+        $user = $this->request->user;
+        $data = $this->service->verify($user['id'], $p['code']);
 
-            return $this->Success($data);
+        return $this->Success($data);
     }
 }

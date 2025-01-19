@@ -6,7 +6,6 @@ use app\exception\BaseException;
 use app\trait\Output;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
-use think\Exception;
 use think\exception\Handle;
 use think\exception\HttpException;
 use think\exception\HttpResponseException;

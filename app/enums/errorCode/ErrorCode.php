@@ -1,6 +1,6 @@
 <?php
 
-namespace app\enums\ErrorCode;
+namespace app\enums\errorCode;
 
 /**
  * 通用错误 如果以后业务太多 每个业务一个错误码
