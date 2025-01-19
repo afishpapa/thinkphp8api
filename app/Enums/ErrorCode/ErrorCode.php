@@ -21,10 +21,13 @@ enum ErrorCode: int
     // 用户模块错误码
     case USER_NOT_FOUND = 2000; // 用户不存在
     case USER_ALREADY_EXISTS = 2001; // 用户已存在
+    case USER_BALANCE_NOT_EXITS = 2002; //用户余额记录不存在
+    case USER_BALANCE_NOT_ENOUGH = 2003; //用户余额不足
+    case USER_BALANCE_UPDATE_ERROR = 2004; //用户余额更新失败
+    case USER_BALANCE_LOG_CREATE_ERROR = 2005; //用户余额更新记录添加
 
     // vendor模块错误码
     case VENDOR_NOT_FOUND = 3000; // 用户不存在
-
 
 
     public function message(): string
@@ -39,6 +42,10 @@ enum ErrorCode: int
 
             self::USER_NOT_FOUND => '用户不存在',
             self::USER_ALREADY_EXISTS => '用户已存在',
+            self::USER_BALANCE_NOT_EXITS => '用户余额记录不存在',
+            self::USER_BALANCE_NOT_ENOUGH => '用户余额不足',
+            self::USER_BALANCE_UPDATE_ERROR => '用户余额更新失败',
+            self::USER_BALANCE_LOG_CREATE_ERROR => '用户余额更新记录添加',
 
             default => 'unset error message'  // 默认返回
         };

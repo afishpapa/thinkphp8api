@@ -4,6 +4,7 @@ namespace app\controller;
 
 use app\BaseController;
 use app\Enums\ErrorCode\ErrorCode;
+use app\model\UserBalanceModel;
 use app\model\UserLoginModel;
 use app\services\CryptService;
 use DateTime;
@@ -14,6 +15,13 @@ class Index extends BaseController
 {
     public function index()
     {
+
+        $balance = new UserBalanceModel();
+
+        $balance->change(2, 'GBP', 10);
+        $balance->change(2, 'GBP', -20);
+        $balance->change(2, 'GBP', -30);
+
 
         return $this->Error(ErrorCode::USER_NOT_FOUND);
         die;

@@ -18,7 +18,7 @@ class CheckJwt
         $token = $request->header('Authorization');
 
         if (!$token) {
-            return $this->Error('Access token missing', 402);
+            return $this->Error('Access token missing');
         }
 
         // 去掉 "Bearer " 前缀
@@ -35,7 +35,7 @@ class CheckJwt
             // 记录错误日志
             Log::error('JWT decode failed: ' . $e->getMessage());
 
-            return $this->Error('Invalid token', 401);
+            return $this->Error('Invalid token');
         }
 
         return $next($request);

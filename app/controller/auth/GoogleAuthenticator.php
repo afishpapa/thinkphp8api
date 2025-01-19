@@ -30,18 +30,11 @@ class GoogleAuthenticator extends BaseController
 
     public function verify(): Json
     {
-        try {
             $p = input();
             //validate  @todo
             $user = $this->request->user;
-            $data = $this->service->verifyCode($user['id'], $p['code']);
+            $data = $this->service->verify($user['id'], $p['code']);
 
             return $this->Success($data);
-        } catch (BaseException $e) {
-            return $this->Error($e->getCode());
-        } catch (\Exception $e) {
-            return $this->Error($e->getCode());
-        }
-
     }
 }

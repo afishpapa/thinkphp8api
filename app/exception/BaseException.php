@@ -18,6 +18,3 @@ class BaseException extends Exception
         return $this->errorCode;
     }
 }
-//
-//// 抛出异常
-//throw new ApiException(ErrorCode::USER_NOT_FOUND);

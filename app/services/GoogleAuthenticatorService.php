@@ -41,19 +41,43 @@ class GoogleAuthenticatorService extends BaseService
     }
 
     /**
+     * 验证动态验证码初始化
+     * @param string $secret
+     * @param string $code
+     * @return bool
+     */
+    public function verify(int $user_id, string $code): bool
+    {
+        $user2FA = User2FAModel::where('user_id', $user_id)->where('status', 'unverified')->find();
+        if (empty($user2FA)) {
+            throw New BaseException(ErrorCode::VERIFY_2FA_ERROR);
+        }
+
+        $totp = TOTP::create($user2FA['secret']);
+        $result = $totp->verify($code);
+        if ($result === false) {
+            throw New BaseException(ErrorCode::VERIFY_2FA_ERROR);
+        }
+
+        $user2FA->status = 'verified';
+        $user2FA->save();
+
+        return true;
+    }
+
+    /**
      * 验证动态验证码
      * @param string $secret
      * @param string $code
      * @return bool
      */
-    public function verifyCode(int $user_id, string $code): bool
+    public function verified(int $user_id, string $code): bool
     {
-        $secret = User2FAModel::where('user_id', $user_id)->where('status', 'unverified')->value('secret');
-        if (empty($secret)) {
+        $user2FA = User2FAModel::where('user_id', $user_id)->where('status', 'verified')->find();
+        if (empty($user2FA)) {
             throw New BaseException(ErrorCode::VERIFY_2FA_ERROR);
         }
-
-        $totp = TOTP::create($secret);
+        $totp = TOTP::create($user2FA['secret']);
         $result = $totp->verify($code);
         if ($result === false) {
             throw New BaseException(ErrorCode::VERIFY_2FA_ERROR);

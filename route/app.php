@@ -42,7 +42,7 @@ Route::group('/register', function () {
 });
 
 
-Route::group('/', function () {
+Route::group(function () {
     // 后台登录
     Route::get('/googleAuthenticator/generateSecretAndQRCode', '/auth.googleAuthenticator/generateSecretAndQRCode');
     // 验证 2FA code

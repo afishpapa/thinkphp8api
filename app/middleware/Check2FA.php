@@ -4,6 +4,7 @@ declare (strict_types=1);
 namespace app\middleware;
 
 use app\Enums\ErrorCode\ErrorCode;
+use app\model\UserLoginModel;
 use app\services\GoogleAuthenticatorService;
 use app\trait\Output;
 use think\facade\Log;
@@ -20,21 +21,16 @@ class Check2FA
         if (!$code) {
             return $this->Error(ErrorCode::REQUIRE_2FA);
         }
-
-        try {
-            $user = $request->user;
-
-            $result = (new GoogleAuthenticatorService)->verifyCode($secret, $code);
-            if ($result === false) {
-                return $this->Error(ErrorCode::VERIFY_2FA_ERROR);
-            }
-        } catch (\Exception $e) {
-            // 记录错误日志
-            Log::error('Check2FA failed: ' . $e->getMessage());
-
-            return $this->Error();
-        }
+        $user_id = $request->user['id'] ?? $this->notLoggedIn();
+        (new GoogleAuthenticatorService)->verified($user_id, $code);
 
         return $next($request);
+    }
+
+    private function notLoggedIn(): int
+    {
+        $p = input();
+
+        return UserLoginModel::where('identity_type', $p['identity_type'])->where('identifier', $p['identifier'])->value('user_id');
     }
 }
